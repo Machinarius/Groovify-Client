@@ -5,7 +5,7 @@ export interface HelloProps {
     framework: string
 }
 
-export class HelloWorld extends React.Component<HelloProps, {}> {
+export default class HelloWorld extends React.Component<HelloProps, {}> {
     render() {
         return (<div>Hello from {this.props.compiler} and {this.props.framework}</div>);
     }
