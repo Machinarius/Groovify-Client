@@ -6,7 +6,16 @@ export default class GoogleAPIAuthenticationService implements IAuthenticationSe
     private googleAuth: gapi.auth2.GoogleAuth;
     private statusSubject: Subject<boolean>;
 
+    constructor() {
+        this.onSignedInChanged = this.onSignedInChanged.bind(this);
+    }
+
     async initAsync(): Promise<any> {
+        let gapiLoad = new Promise<void>((resolve) => {
+            gapi.load("client:auth2", resolve);
+        });
+
+        await gapiLoad;
         await gapi.client.init({
             apiKey: process.env.GOOGLE_API_KEY,
             clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
@@ -27,6 +36,11 @@ export default class GoogleAPIAuthenticationService implements IAuthenticationSe
     isUserAuthenticated(): boolean {
         this.ensureInitialized();
         return this.googleAuth.isSignedIn.get();
+    }
+
+    beginLogin(): void {
+        this.ensureInitialized();
+        this.googleAuth.signIn();
     }
 
     private ensureInitialized() {

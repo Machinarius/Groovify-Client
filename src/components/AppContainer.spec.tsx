@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { mock, when, instance, verify } from "ts-mockito";
 import JestMockPromise from "jest-mock-promise";
 
@@ -85,4 +89,22 @@ test("Must update the UI when the Authentication state changes", async () => {
     
     fakeAuthStateSubject.next(false);
     expect(component.find(LoginSplash)).toHaveLength(1);
+});
+
+test("Must flow the initialized Authentication Service into the LoginSplash child component", async () => {
+    let fakeInitPromise = new Promise((resolve) => { resolve(); });
+    let mockAuthService = mock<IAuthenticationService>();
+    when(mockAuthService.initAsync()).thenReturn(fakeInitPromise);
+    when(mockAuthService.isUserAuthenticated()).thenReturn(false);
+    when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
+
+    let authService = instance(mockAuthService);
+    let component = shallow(
+        <AppContainer _authService={authService} />
+    );
+
+    await fakeInitPromise;
+    
+    let loginSplashComponent = component.find(LoginSplash);
+    expect(loginSplashComponent.prop('authService')).toBe(authService);
 });
