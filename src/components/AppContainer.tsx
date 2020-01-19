@@ -11,6 +11,7 @@ export interface IProps {
 }
 
 interface IState {
+    initialized: boolean;
     userAuthenticated: boolean;
 }
 
@@ -21,6 +22,7 @@ export default class AppContainer extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+        this.initializeAsync = this.initializeAsync.bind(this);
         this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
 
         this.authService = props._authService;
@@ -29,17 +31,28 @@ export default class AppContainer extends React.Component<IProps, IState> {
         }
 
         this.state = {
-            userAuthenticated: this.authService.isUserAuthenticated()
+            initialized: false,
+            userAuthenticated: false
         };
     }
 
     componentDidMount() {
-        this.authStateSub = this.authService.authStateChanges()
-            .subscribe(this.onAuthStateChanged);
+        this.initializeAsync();
     }
 
     componentWillUnmount() {
         this.authStateSub.unsubscribe();
+    }
+
+    private async initializeAsync(): Promise<any> {
+        await this.authService.initAsync();
+        this.authStateSub = this.authService.authStateChanges()
+            .subscribe(this.onAuthStateChanged);
+
+        this.setState({
+            initialized: true,
+            userAuthenticated: this.authService.isUserAuthenticated()
+        });
     }
 
     private onAuthStateChanged(authState: boolean): void {
@@ -49,6 +62,10 @@ export default class AppContainer extends React.Component<IProps, IState> {
     }
 
     render() {
+        if (!this.state.initialized) {
+            return (<div id="loading-message">Loading data...</div>);
+        }
+
         if (this.state.userAuthenticated) {
             return (<PlayerShell />);
         } 

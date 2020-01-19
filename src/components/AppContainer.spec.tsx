@@ -1,7 +1,7 @@
 import { mock, when, instance, verify } from "ts-mockito";
+import JestMockPromise from "jest-mock-promise";
 
 import * as React from "react";
-import * as testRenderer from "react-test-renderer";
 import { shallow } from "enzyme";
 
 import { Subject, Observable } from "rxjs";
@@ -12,40 +12,72 @@ import PlayerShell from "./PlayerShell/PlayerShell";
 
 import IAuthenticationService from "../services/IAuthenticationService";
 
-test("Must show the LoginSplash component when there's no user logged in", () => {
+test("Must show a Loading message while the Authentication Service initializes", async () => {
+    let fakeInitPromise = new JestMockPromise();
     let mockAuthService = mock<IAuthenticationService>();
+    when(mockAuthService.initAsync()).thenReturn(fakeInitPromise as any);
     when(mockAuthService.isUserAuthenticated()).thenReturn(false);
     when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
 
     let component = shallow(
         <AppContainer _authService={instance(mockAuthService)} />
     );
+    expect(component.find("#loading-message")).toHaveLength(1);
+    verify(mockAuthService.initAsync()).once();
+
+    fakeInitPromise.resolve();
+    await fakeInitPromise; // This await forces the Promise to finish flushing?
+
     expect(component.find(LoginSplash)).toHaveLength(1);
     verify(mockAuthService.isUserAuthenticated()).once();
 });
 
-test("Must show the PlayerShell component when ther user is logged in", () => {
+test("Must show the LoginSplash component when there's no user logged in", async () => {
+    let fakeInitPromise = new Promise((resolve) => { resolve(); });
     let mockAuthService = mock<IAuthenticationService>();
+    when(mockAuthService.initAsync()).thenReturn(fakeInitPromise);
+    when(mockAuthService.isUserAuthenticated()).thenReturn(false);
+    when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
+
+    let component = shallow(
+        <AppContainer _authService={instance(mockAuthService)} />
+    );
+
+    await fakeInitPromise;
+    expect(component.find(LoginSplash)).toHaveLength(1);
+    verify(mockAuthService.isUserAuthenticated()).once();
+});
+
+test("Must show the PlayerShell component when ther user is logged in", async () => {
+    let fakeInitPromise = new Promise((resolve) => { resolve(); });
+    let mockAuthService = mock<IAuthenticationService>();
+    when(mockAuthService.initAsync()).thenReturn(fakeInitPromise);
     when(mockAuthService.isUserAuthenticated()).thenReturn(true);
     when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
 
     let component = shallow(
         <AppContainer _authService={instance(mockAuthService)} />
     );
+
+    await fakeInitPromise;
     expect(component.find(PlayerShell)).toHaveLength(1);
     verify(mockAuthService.isUserAuthenticated()).once();
 });
 
-test("Must update the UI when the Authentication state changes", () => {
+test("Must update the UI when the Authentication state changes", async () => {
+    let fakeInitPromise = new Promise((resolve) => { resolve(); });
     let fakeAuthStateSubject = new Subject<boolean>();
 
     let mockAuthService = mock<IAuthenticationService>();
+    when(mockAuthService.initAsync()).thenReturn(fakeInitPromise);
     when(mockAuthService.isUserAuthenticated()).thenReturn(false);
     when(mockAuthService.authStateChanges()).thenReturn(fakeAuthStateSubject);
 
     let component = shallow(
         <AppContainer _authService={instance(mockAuthService)} />
     );
+    
+    await fakeInitPromise;
     expect(component.find(LoginSplash)).toHaveLength(1);
 
     fakeAuthStateSubject.next(true);
