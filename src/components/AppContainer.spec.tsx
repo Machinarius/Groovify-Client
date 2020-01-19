@@ -108,3 +108,21 @@ test("Must flow the initialized Authentication Service into the LoginSplash chil
     let loginSplashComponent = component.find(LoginSplash);
     expect(loginSplashComponent.prop('authService')).toBe(authService);
 });
+
+test("Must flow the initialized Authentication Service into the PlayerShell child component", async () => {
+    let fakeInitPromise = new Promise((resolve) => { resolve(); });
+    let mockAuthService = mock<IAuthenticationService>();
+    when(mockAuthService.initAsync()).thenReturn(fakeInitPromise);
+    when(mockAuthService.isUserAuthenticated()).thenReturn(true);
+    when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
+
+    let authService = instance(mockAuthService);
+    let component = shallow(
+        <AppContainer _authService={authService} />
+    );
+
+    await fakeInitPromise;
+    
+    let playerShellComponent = component.find(PlayerShell);
+    expect(playerShellComponent.prop('authService')).toBe(authService);
+});

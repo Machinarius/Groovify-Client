@@ -45,7 +45,9 @@ module.exports = {
             from: "./node_modules/react-dom/umd/react-dom.development.js",
             to: "./vendor/react-dom.development.js"
         }]),
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: "Groovify"
+        }),
         new HtmlWebpackTagsPlugin({
             tags: [ 
                 "https://apis.google.com/js/api.js",

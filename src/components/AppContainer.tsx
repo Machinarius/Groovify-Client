@@ -68,7 +68,7 @@ export default class AppContainer extends React.Component<IProps, IState> {
         }
 
         if (this.state.userAuthenticated) {
-            return (<PlayerShell />);
+            return (<PlayerShell authService={this.authService} />);
         } 
 
         return (<LoginSplash authService={this.authService} />);

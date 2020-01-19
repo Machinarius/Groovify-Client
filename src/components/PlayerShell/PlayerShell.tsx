@@ -1,6 +1,20 @@
 import * as React from "react";
 
-export default class PlayerShell extends React.Component {
+import IAuthenticationService from "../../services/IAuthenticationService";
+
+export interface IProps {
+    authService: IAuthenticationService;
+}
+
+export default class PlayerShell extends React.Component<IProps, {}> {
+    private authService: IAuthenticationService;
+
+    constructor(props: IProps) {
+        super(props);
+
+        this.authService = props.authService;
+    }
+
     render() {
         return (<div>PlayerShell DEBUG</div>);
     }
