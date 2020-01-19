@@ -38,10 +38,6 @@ export default class AppContainer extends React.Component<IProps, IState> {
         };
     }
 
-    componentDidMount() {
-        this.initializeAsync();
-    }
-
     componentWillUnmount() {
         this.authStateSub.unsubscribe();
     }

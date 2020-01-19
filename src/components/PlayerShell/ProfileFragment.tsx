@@ -2,6 +2,7 @@ import * as React from "react";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
 import UserProfile from "../../models/UserProfile";
+import ProgressUI from "../ProgressUI";
 
 export interface IProps {
     authService: IAuthenticationService
@@ -14,6 +15,7 @@ interface IState {
 
 export default class ProfileFragment extends React.Component<IProps, IState> {
     private authService: IAuthenticationService;
+    private isUnmounted: boolean;
 
     constructor(props: IProps) {
         super(props);
@@ -28,12 +30,16 @@ export default class ProfileFragment extends React.Component<IProps, IState> {
         };
     }
 
-    componentDidMount() {
-        this.loadProfileData();
+    componentWillUnmount() {
+        this.isUnmounted = true;
     }
 
     private async loadProfileData(): Promise<any> {
         let profile = await this.authService.getProfileAsync();
+        if (this.isUnmounted) {
+            return; // TODO: Find out why this is not working - loadProfileData is already bound to the "real" this
+        }
+
         this.setState({
             loadingProfileData: false,
             userProfile: profile
@@ -46,7 +52,7 @@ export default class ProfileFragment extends React.Component<IProps, IState> {
 
     render() {
         if (this.state.loadingProfileData) {
-            return (<p className={"loading-message"}>Loading data...</p>);
+            return (<ProgressUI promiseFactory={() => this.loadProfileData()} />);
         } 
         
         return (
