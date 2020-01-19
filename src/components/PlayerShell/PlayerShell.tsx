@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
+import ProfileFragment from "./ProfileFragment";
 
 export interface IProps {
     authService: IAuthenticationService;
@@ -16,6 +17,10 @@ export default class PlayerShell extends React.Component<IProps, {}> {
     }
 
     render() {
-        return (<div>PlayerShell DEBUG</div>);
+        return (
+            <div>
+                <ProfileFragment authService={this.authService} />
+            </div>
+        );
     }
 }
