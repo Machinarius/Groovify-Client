@@ -11,6 +11,8 @@
     "@types/dotenv-webpack": "^1.7.0",
     "@types/enzyme": "^3.10.4",
     "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/gapi": "^0.0.39",
+    "@types/gapi.auth2": "^0.0.51",
     "@types/jest": "^24.9.0",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",

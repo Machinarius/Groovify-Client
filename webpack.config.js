@@ -47,7 +47,11 @@ module.exports = {
         }]),
         new HtmlWebpackPlugin(),
         new HtmlWebpackTagsPlugin({
-            tags: [ "./vendor/react.development.js", "./vendor/react-dom.development.js" ],
+            tags: [ 
+                "https://apis.google.com/js/api.js",
+                "./vendor/react.development.js", 
+                "./vendor/react-dom.development.js" 
+            ],
             append: false
         })
     ],
