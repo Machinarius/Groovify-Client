@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Must show a progress bar element while the promise is resolving and then hide its own UI when the promise resolves 1`] = `
+<div>
+  Loading data...
+  <progress />
+</div>
+`;
+
+exports[`Must show a progress bar element while the promise is resolving and then hide its own UI when the promise resolves 2`] = `
+<div
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+/>
+`;
+
+exports[`Must show a progress bar element while the promise is resolving and then show an error message when the promise rejects 1`] = `
+<div>
+  Loading data...
+  <progress />
+</div>
+`;
+
+exports[`Must show a progress bar element while the promise is resolving and then show an error message when the promise rejects 2`] = `
+<div>
+  <p>
+    Loading data failed, please check your internet connection and try again
+  </p>
+  <button
+    className="retry-button"
+    onClick={[Function]}
+  >
+    Try Again
+  </button>
+</div>
+`;
