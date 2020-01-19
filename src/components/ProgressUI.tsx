@@ -2,7 +2,7 @@ import * as React from "react";
 
 export interface IProps<TPromise> {
     promiseFactory: () => Promise<TPromise>;
-    callback: (result: TPromise, error: Error) => void;
+    callback?: (result: TPromise, error: Error) => void;
 }
 
 interface IState {
@@ -36,14 +36,18 @@ export default class ProgressUI<TPromise> extends React.Component<IProps<TPromis
 
         try {
             let result = await this.props.promiseFactory();
-            this.props.callback(result, null);
+            if (this.props.callback) {
+                this.props.callback(result, null);
+            }
 
             this.setState({
                 promiseIsRunning: false,
                 promiseResolved: true
             });
         } catch (error) {
-            this.props.callback(null, error);
+            if (this.props.callback) {
+                this.props.callback(null, error);
+            }
 
             this.setState({
                 promiseIsRunning: false,

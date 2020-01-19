@@ -11,6 +11,7 @@ import { shallow } from "enzyme";
 import { Subject, Observable } from "rxjs";
 
 import AppContainer from "./AppContainer"
+import ProgressUI from "./ProgressUI";
 import LoginSplash from "./LoginSplash/LoginSplash"
 import PlayerShell from "./PlayerShell/PlayerShell";
 
@@ -26,7 +27,7 @@ test("Must show a Loading message while the Authentication Service initializes",
     let component = shallow(
         <AppContainer _authService={instance(mockAuthService)} />
     );
-    expect(component.find("#loading-message")).toHaveLength(1);
+    expect(component.find(ProgressUI)).toHaveLength(1);
     verify(mockAuthService.initAsync()).once();
 
     fakeInitPromise.resolve();

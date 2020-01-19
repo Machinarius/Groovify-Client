@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 
 import LoginSplash from "./LoginSplash/LoginSplash";
 import PlayerShell from "./PlayerShell/PlayerShell";
+import ProgressUI from "./ProgressUI";
 
 import IAuthenticationService from "../services/IAuthenticationService";
 import GoogleAPIAuthenticationService from "../services/GoogleAPIAuthenticationService";
@@ -64,7 +65,7 @@ export default class AppContainer extends React.Component<IProps, IState> {
 
     render() {
         if (!this.state.initialized) {
-            return (<div id="loading-message">Loading data...</div>);
+            return (<ProgressUI promiseFactory={() => this.initializeAsync()} />);
         }
 
         if (this.state.userAuthenticated) {
