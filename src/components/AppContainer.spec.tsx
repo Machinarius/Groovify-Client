@@ -6,12 +6,11 @@ import { mock, when, instance, verify } from "ts-mockito";
 import JestMockPromise from "jest-mock-promise";
 
 import * as React from "react";
-import { shallow, mount } from "enzyme";
+import { shallow } from "enzyme";
 
 import { Subject, Observable } from "rxjs";
 
 import AppContainer from "./AppContainer"
-import ProgressUI from "./ProgressUI";
 import LoginSplash from "./LoginSplash/LoginSplash"
 import PlayerShell from "./PlayerShell/PlayerShell";
 
@@ -24,15 +23,14 @@ test("Must show a Loading message while the Authentication Service initializes",
     when(mockAuthService.isUserAuthenticated()).thenReturn(false);
     when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
 
-    let component = mount(
+    let component = shallow(
         <AppContainer _authService={instance(mockAuthService)} />
     );
-    expect(component.find(ProgressUI)).toHaveLength(1);
+    expect(component.find("p.loading-message").text()).toEqual("Loading data...");
     verify(mockAuthService.initAsync()).once();
 
     fakeInitPromise.resolve();
     await fakeInitPromise; // This await forces the Promise to finish flushing?
-    component.update();
     
     expect(component.find(LoginSplash)).toHaveLength(1);
     verify(mockAuthService.isUserAuthenticated()).once();
@@ -45,12 +43,11 @@ test("Must show the LoginSplash component when there's no user logged in", async
     when(mockAuthService.isUserAuthenticated()).thenReturn(false);
     when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
 
-    let component = mount(
+    let component = shallow(
         <AppContainer _authService={instance(mockAuthService)} />
     );
 
     await fakeInitPromise;
-    component.update();
 
     expect(component.find(LoginSplash)).toHaveLength(1);
     verify(mockAuthService.isUserAuthenticated()).once();
@@ -63,7 +60,7 @@ test("Must show the PlayerShell component when ther user is logged in", async ()
     when(mockAuthService.isUserAuthenticated()).thenReturn(true);
     when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
 
-    let component = mount(
+    let component = shallow(
         <AppContainer _authService={instance(mockAuthService)} />
     );
 
@@ -107,7 +104,7 @@ test("Must flow the initialized Authentication Service into the LoginSplash chil
     when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
 
     let authService = instance(mockAuthService);
-    let component = mount(
+    let component = shallow(
         <AppContainer _authService={authService} />
     );
 
@@ -126,7 +123,7 @@ test("Must flow the initialized Authentication Service into the PlayerShell chil
     when(mockAuthService.authStateChanges()).thenReturn(new Observable<boolean>());
 
     let authService = instance(mockAuthService);
-    let component = mount(
+    let component = shallow(
         <AppContainer _authService={authService} />
     );
 

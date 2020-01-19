@@ -5,10 +5,9 @@
 import { mock, instance, when, verify } from "ts-mockito"
 
 import * as React from "react";
-import { shallow, mount } from "enzyme";
+import { shallow } from "enzyme";
 
 import ProfileFragment from "./ProfileFragment"
-import ProgressUI from "../ProgressUI";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
 import UserProfile from "../../models/UserProfile";
@@ -23,10 +22,10 @@ test("Must immediately load and display the user profile data", async () => {
     let mockAuthService = mock<IAuthenticationService>();
     when(mockAuthService.getProfileAsync()).thenReturn(fakeProfilePromise);
 
-    let component = mount(
+    let component = shallow(
         <ProfileFragment authService={instance(mockAuthService)} />
     );
-    expect(component.find(ProgressUI)).toHaveLength(1);
+    expect(component.find("p.loading-message").text()).toEqual("Loading data...");
 
     await fakeProfilePromise;
     component.update();
@@ -46,7 +45,7 @@ test("Must call logOut on the Auth Service instance when the user clicks 'Log Ou
     when(mockAuthService.getProfileAsync()).thenReturn(fakeProfilePromise);
     when(mockAuthService.logOut()).thenReturn();
 
-    let component = mount(
+    let component = shallow(
         <ProfileFragment authService={instance(mockAuthService)} />
     );
     await fakeProfilePromise;

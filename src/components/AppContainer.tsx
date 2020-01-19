@@ -38,6 +38,10 @@ export default class AppContainer extends React.Component<IProps, IState> {
         };
     }
 
+    componentDidMount() {
+        this.initializeAsync();
+    }
+
     componentWillUnmount() {
         this.authStateSub.unsubscribe();
     }
@@ -61,7 +65,7 @@ export default class AppContainer extends React.Component<IProps, IState> {
 
     render() {
         if (!this.state.initialized) {
-            return (<ProgressUI promiseFactory={() => this.initializeAsync()} />);
+            return (<p className="loading-message">Loading data...</p>);
         }
 
         if (this.state.userAuthenticated) {
