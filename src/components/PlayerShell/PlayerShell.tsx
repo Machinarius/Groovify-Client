@@ -1,4 +1,5 @@
 import * as React from "react";
+import Styled from "styled-components";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
 import ProfileFragment from "./ProfileFragment";
@@ -10,6 +11,15 @@ export interface IProps {
 }
 
 export default class PlayerShell extends React.Component<IProps, {}> {
+    private StackWrapper = Styled.div`
+        display: flex;
+        flex-direction: column;
+    `;
+
+    private LibraryWrapper = Styled.div`
+        flex-grow: 1;
+    `;
+
     private authService: IAuthenticationService;
 
     constructor(props: IProps) {
@@ -20,11 +30,13 @@ export default class PlayerShell extends React.Component<IProps, {}> {
 
     render() {
         return (
-            <div>
+            <this.StackWrapper>
                 <ProfileFragment authService={this.authService} />
-                <LibraryFragment authService={this.authService} />
+                <this.LibraryWrapper>
+                    <LibraryFragment authService={this.authService} />
+                </this.LibraryWrapper>
                 <NowPlayingFragment authService={this.authService} />
-            </div>
+            </this.StackWrapper>
         );
     }
 }

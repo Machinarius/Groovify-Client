@@ -1,11 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Must display all child components with correct CSS classes 1`] = `
-<div>
+<div
+  className="sc-AxheI jLBwKR"
+>
   <p
     className="loading-message"
   >
     Loading data...
   </p>
+  <div
+    className="sc-Axmtr LFoOD"
+  >
+    <div />
+  </div>
+  <div />
 </div>
 `;
