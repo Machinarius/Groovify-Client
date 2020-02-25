@@ -45,12 +45,29 @@ test("Must show a NowPlaying Fragment", () => {
     expect(component.find(NowPlayingFragment).prop('authService')).toBe(authService);
 });
 
+test("Must create a music player controller and flow it to the library and now playing components", () => {
+    let mockAuthService = mock<IAuthenticationService>();
+    let authService = instance(mockAuthService);
+    let component = shallow(
+        <PlayerShell authService={authService} />
+    );
+
+    let npPlayerController = component.find(NowPlayingFragment).prop('playerController');
+    let libraryPlayerController = component.find(LibraryFragment).prop('playerController');
+
+    expect(npPlayerController).toBeDefined();
+    expect(libraryPlayerController).toBeDefined();
+    expect(libraryPlayerController).toStrictEqual(npPlayerController);
+});
+
 test("Must display all child components with correct CSS classes", () => {
     let fakeProfile: UserProfile = {
         name: "Germán Valencia",
         pictureUrl: "https://giphy.com/gifs/Px8HAmJdeiiIw/html5"
     };
 
+    // TODO: Use enzyme shallow rendering with snapshots to avoid having to setup this promise
+    // https://stackoverflow.com/questions/55341289/configure-enzyme-to-json-with-jest
     let fakeProfilePromise = new Promise<UserProfile>(resolve => resolve(fakeProfile));
     let mockAuthService = mock<IAuthenticationService>();
     when(mockAuthService.getProfileAsync()).thenReturn(fakeProfilePromise);

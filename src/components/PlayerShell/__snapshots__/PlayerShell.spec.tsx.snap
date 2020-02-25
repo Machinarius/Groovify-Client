@@ -2,7 +2,7 @@
 
 exports[`Must display all child components with correct CSS classes 1`] = `
 <div
-  className="sc-AxheI jLBwKR"
+  className="sc-AxmLO hDkEpL"
 >
   <p
     className="loading-message"
@@ -10,7 +10,7 @@ exports[`Must display all child components with correct CSS classes 1`] = `
     Loading data...
   </p>
   <div
-    className="sc-Axmtr LFoOD"
+    className="sc-fzozJi dsoZvX"
   >
     <div />
   </div>
