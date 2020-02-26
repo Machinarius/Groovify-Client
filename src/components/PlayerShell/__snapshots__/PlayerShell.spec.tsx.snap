@@ -12,7 +12,13 @@ exports[`Must display all child components with correct CSS classes 1`] = `
   <div
     className="sc-fzozJi dsoZvX"
   >
-    <div />
+    <div>
+      <p
+        className="loading-text"
+      >
+        Loading albums...
+      </p>
+    </div>
   </div>
   <div />
 </div>
