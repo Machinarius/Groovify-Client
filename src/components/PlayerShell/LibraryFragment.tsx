@@ -7,6 +7,7 @@ import IMusicLibraryRepository from "../../services/IMusicLibraryRepository";
 import GroovifyAPIMusicLibraryRepository from "../../services/GroovifyAPIMusicLibraryRepository";
 
 import { Album } from "../../models/Album";
+import AlbumComponent from "./Library/AlbumComponent";
 
 export interface IProps {
     authService: IAuthenticationService,
@@ -54,8 +55,15 @@ export default class LibraryFragment extends React.Component<IProps, IState> {
 
     render() {
         if (this.state.didLoadAllAlbums) {
-            if (this.state.albums) {
+            if (this.state.albums.length) {
+                var albumComponents = this.state.albums.map(album => 
+                    <li key={album.id}>
+                        <AlbumComponent albumObject={album}></AlbumComponent>
+                    </li>);
 
+                return (
+                    <ul>{albumComponents}</ul>
+                );
             }
 
             return (

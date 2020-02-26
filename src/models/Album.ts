@@ -5,5 +5,5 @@ export interface Album {
     coverUrl: string,
     title: string,
     artists: string
-    songs: [Song]
+    songs: Song[]
 }
