@@ -2,7 +2,6 @@ import * as React from "react";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
 import UserProfile from "../../models/UserProfile";
-import ProgressUI from "../ProgressUI";
 
 export interface IProps {
     authService: IAuthenticationService
