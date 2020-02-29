@@ -5,12 +5,19 @@ import SongComponent from "./SongComponent";
 import { Album } from "../../../models/Album";
 
 export interface IProps {
-    albumObject: Album
+    albumObject: Album,
+    onPlaybackRequested: (songId: string, albumId: string) => void;
 }
 
 export default class AlbumComponent extends React.Component<IProps, {}> {
     constructor(props: IProps) {
         super(props);
+
+        this.firePlaybackRequested = this.firePlaybackRequested.bind(this);
+    }
+
+    private firePlaybackRequested(songId: string): void {
+        this.props.onPlaybackRequested(songId, this.props.albumObject.id);
     }
 
     render() {
@@ -18,7 +25,7 @@ export default class AlbumComponent extends React.Component<IProps, {}> {
         if (this.props.albumObject.songs.length > 0) {
             let songItems = this.props.albumObject.songs.map(song => 
                 <li key={song.id}>
-                    <SongComponent songObject={song} />
+                    <SongComponent songObject={song} onPlaybackRequested={this.firePlaybackRequested} />
                 </li>
             );
 
