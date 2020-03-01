@@ -50,10 +50,10 @@ test("Must create a music player controller and flow it to the library and now p
         <PlayerShell authService={authService} />
     );
 
-    let npPlayerController = component.find(NowPlayingFragment).prop('playerController');
-    let libraryPlayerController = component.find(LibraryFragment).prop('playerController');
+    let npPlaybackController = component.find(NowPlayingFragment).prop('playbackController');
+    let libraryPlaybackController = component.find(LibraryFragment).prop('playbackController');
 
-    expect(npPlayerController).toBeDefined();
-    expect(libraryPlayerController).toBeDefined();
-    expect(libraryPlayerController).toStrictEqual(npPlayerController);
+    expect(npPlaybackController).toBeDefined();
+    expect(libraryPlaybackController).toBeDefined();
+    expect(libraryPlaybackController).toStrictEqual(npPlaybackController);
 });

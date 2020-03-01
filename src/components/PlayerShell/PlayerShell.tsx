@@ -1,8 +1,8 @@
 import * as React from "react";
 import Styled from "styled-components";
 
-import IMusicPlayerController from "../../services/IMusicPlayerController";
-import DefaultPlayerController from "../../services/DefaultPlayerController";
+import IMusicPlaybackController from "../../services/IMusicPlaybackController";
+import DefaultPlaybackController from "../../services/DefaultPlaybackController";
 import IAuthenticationService from "../../services/IAuthenticationService";
 
 import ProfileFragment from "./ProfileFragment";
@@ -24,13 +24,13 @@ export default class PlayerShell extends React.Component<IProps, {}> {
     `;
 
     private authService: IAuthenticationService;
-    private playerController: IMusicPlayerController;
+    private playbackController: IMusicPlaybackController;
 
     constructor(props: IProps) {
         super(props);
 
         this.authService = props.authService;
-        this.playerController = new DefaultPlayerController(this.authService);
+        this.playbackController = new DefaultPlaybackController(this.authService);
     }
 
     render() {
@@ -38,9 +38,9 @@ export default class PlayerShell extends React.Component<IProps, {}> {
             <this.StackWrapper>
                 <ProfileFragment authService={this.authService} />
                 <this.LibraryWrapper>
-                    <LibraryFragment authService={this.authService} playerController={this.playerController} />
+                    <LibraryFragment authService={this.authService} playbackController={this.playbackController} />
                 </this.LibraryWrapper>
-                <NowPlayingFragment authService={this.authService} playerController={this.playerController} />
+                <NowPlayingFragment authService={this.authService} playbackController={this.playbackController} />
             </this.StackWrapper>
         );
     }

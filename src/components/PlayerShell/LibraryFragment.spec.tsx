@@ -9,7 +9,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
-import IMusicPlayerController from "../../services/IMusicPlayerController";
+import IMusicPlaybackController from "../../services/IMusicPlaybackController";
 import IMusicLibraryRepository from "../../services/IMusicLibraryRepository";
 
 import LibraryFragment from "./LibraryFragment";
@@ -18,7 +18,7 @@ import AlbumComponent from "./Library/AlbumComponent";
 
 test("Must show a loading message while the repo loads all albums", async () => {
     let mockAuth = mock<IAuthenticationService>();
-    let mockPlayerController = mock<IMusicPlayerController>();
+    let mockPlayerController = mock<IMusicPlaybackController>();
     let mockLibRepo = mock<IMusicLibraryRepository>();
 
     let fakeAlbumsPromise = new JestMockPromise();
@@ -27,7 +27,7 @@ test("Must show a loading message while the repo loads all albums", async () => 
     let libFragment = shallow(
         <LibraryFragment 
             authService={instance(mockAuth)} 
-            playerController={instance(mockPlayerController)}
+            playbackController={instance(mockPlayerController)}
             overrideLibraryRepo={instance(mockLibRepo)} />
     );
 
@@ -42,7 +42,7 @@ test("Must show a loading message while the repo loads all albums", async () => 
 
 test("Must create an Album component for each album returned by the repo", async () => {
     let mockAuth = mock<IAuthenticationService>();
-    let mockPlayerController = mock<IMusicPlayerController>();
+    let mockPlayerController = mock<IMusicPlaybackController>();
     let mockLibRepo = mock<IMusicLibraryRepository>();
 
     let fakeAlbums: Album[] = [{
@@ -64,7 +64,7 @@ test("Must create an Album component for each album returned by the repo", async
     let libFragment = shallow(
         <LibraryFragment 
             authService={instance(mockAuth)} 
-            playerController={instance(mockPlayerController)}
+            playbackController={instance(mockPlayerController)}
             overrideLibraryRepo={instance(mockLibRepo)} />
     );
 
@@ -78,4 +78,37 @@ test("Must create an Album component for each album returned by the repo", async
 
     let toroRossoAlbum = albumComponents.at(1);
     expect(toroRossoAlbum.prop("albumObject")).toEqual(fakeAlbums[1]);
+});
+
+test("Must forward the playbackRequested event to the playback Controller", async () => {
+    let mockAuth = mock<IAuthenticationService>();
+    let mockPlayerController = mock<IMusicPlaybackController>();
+    let mockLibRepo = mock<IMusicLibraryRepository>();
+
+    let fakeAlbums: Album[] = [{
+        id: "17",
+        artists: "Sebastian Vettel; Charles Leclerc",
+        coverUrl: "https://giphy.com/gifs/mRoCaQMjS6xvgabiho/html5",
+        songs: [{
+            id: "48",
+            artists: "Sebastial Vettel",
+            title: "The top spin",
+            lengthInSeconds: 10
+        }],
+        title: "Scuderia Ferrari"
+    }];
+
+    let fakeAlbumsPromise = new Promise(resolve => resolve(fakeAlbums));
+    when(mockLibRepo.getAllAlbumsAsync()).thenReturn(fakeAlbumsPromise as any);
+
+    let libFragment = shallow(
+        <LibraryFragment 
+            authService={instance(mockAuth)} 
+            playbackController={instance(mockPlayerController)}
+            overrideLibraryRepo={instance(mockLibRepo)} />
+    );
+    await fakeAlbumsPromise;
+
+    libFragment.find(AlbumComponent).prop("onPlaybackRequested")(fakeAlbums[0].songs[0].id, fakeAlbums[0].id);
+    verify(mockPlayerController.startPlayback(fakeAlbums[0].songs[0].id, fakeAlbums[0].id)).once();
 });

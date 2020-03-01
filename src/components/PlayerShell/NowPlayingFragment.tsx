@@ -1,11 +1,11 @@
 import * as React from "react";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
-import IMusicPlayerController from "../../services/IMusicPlayerController";
+import IMusicPlaybackController from "../../services/IMusicPlaybackController";
 
 export interface IProps {
     authService: IAuthenticationService,
-    playerController: IMusicPlayerController
+    playbackController: IMusicPlaybackController
 }
 
 export default class NowPlayingFragment extends React.Component<IProps, {}> {
