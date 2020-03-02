@@ -40,7 +40,6 @@ test("Must show a NowPlaying Fragment", () => {
     );
 
     expect(component.find(NowPlayingFragment)).toHaveLength(1);
-    expect(component.find(NowPlayingFragment).prop('authService')).toBe(authService);
 });
 
 test("Must create a music player controller and flow it to the library and now playing components", () => {
