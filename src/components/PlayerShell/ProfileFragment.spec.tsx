@@ -51,8 +51,8 @@ test("Must call logOut on the Auth Service instance when the user clicks 'Log Ou
     await fakeProfilePromise;
     component.update();
     
-    expect(component.find("button.logout-button").text()).toEqual("Log Out");
-    component.find("button.logout-button").simulate('click');
+    expect(component.find(".logout-button").text()).toEqual("Log Out");
+    component.find(".logout-button").simulate('click');
 
     verify(mockAuthService.logOut()).once();
 });
