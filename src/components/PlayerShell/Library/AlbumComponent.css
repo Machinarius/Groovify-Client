@@ -1,0 +1,29 @@
+.album-title {
+    margin: 0;
+    margin-bottom: 0.15em;    
+}
+
+.album-artists {
+    margin: 0;
+}
+
+.album-name {
+    margin-bottom: 0.5em;
+}
+
+.songs-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.album-cover {
+    width: 8em;
+    height: 8em;
+}
+
+.songs-list {
+    flex-grow: 1;
+
+    list-style-type: none;
+}

@@ -14,4 +14,5 @@ body {
 * {
     font-family: 'Roboto Condensed', 'Sans-Serif';
     color: #d8d8d8;
+    user-select: none;
 }

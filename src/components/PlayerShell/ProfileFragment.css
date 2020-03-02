@@ -5,6 +5,10 @@
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+
+    border-color: #1ed760;
+    border-width: 2px;
+    border-style: none none solid none;
 }
 
 .app-logo {

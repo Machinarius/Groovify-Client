@@ -1,0 +1,31 @@
+.song-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin-bottom: 0.5em;
+    margin-right: 2em;
+
+    padding: 1em;
+}
+
+.song-info:hover {
+    background: #282828;
+}
+
+.song-name {
+    align-self: start;
+    flex-grow: 1;
+}
+
+.song-name {
+    align-self: end;
+}
+
+.song-artists {
+    margin: 0;
+}
+
+.song-title {
+    margin: 0;
+}

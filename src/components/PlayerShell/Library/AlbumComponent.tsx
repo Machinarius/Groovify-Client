@@ -4,6 +4,8 @@ import SongComponent from "./SongComponent";
 
 import { Album } from "../../../models/Album";
 
+import "./AlbumComponent.css"
+
 export interface IProps {
     albumObject: Album,
     onPlaybackRequested: (songId: string, albumId: string) => void;
@@ -29,17 +31,21 @@ export default class AlbumComponent extends React.Component<IProps, {}> {
                 </li>
             );
 
-            songsElement = <ul>{songItems}</ul>;
+            songsElement = <ul className="songs-list">{songItems}</ul>;
         } else {
             songsElement = <h3 className="album-no-songs">This Album has no songs.</h3>
         }
 
         return (
             <div>
-                <h3 className="album-title">{this.props.albumObject.title}</h3>
-                <h4 className="album-artists">{this.props.albumObject.artists}</h4>
-                <img className="album-cover" src={this.props.albumObject.coverUrl}></img>
-                {songsElement}
+                <div className="album-name">
+                    <h3 className="album-title">{this.props.albumObject.title}</h3>
+                    <h4 className="album-artists">{this.props.albumObject.artists}</h4>
+                </div>
+                <div className="songs-container">
+                    <img className="album-cover" src={this.props.albumObject.coverUrl}></img>
+                    {songsElement}
+                </div>
             </div>
         );
     }

@@ -8,6 +8,8 @@ export interface IProps {
     onPlaybackRequested: (id: string) => void;
 }
 
+import "./SongComponent.css"
+
 export default class SongComponent extends React.Component<IProps, {}> {
     constructor(props: IProps) {
         super(props);
@@ -25,10 +27,12 @@ export default class SongComponent extends React.Component<IProps, {}> {
             .format("H:mm:ss");
 
         return (
-            <div onDoubleClick={this.firePlaybackRequested}>
-                <h4 className="song-title">{this.props.songObject.title}</h4>   
-                <h5 className="song-artists">{this.props.songObject.artists}</h5>
-                <p className="song-length">{formattedDuration}</p>
+            <div className="song-info" onDoubleClick={this.firePlaybackRequested}>
+                <div className="song-name">
+                    <h3 className="song-title">{this.props.songObject.title}</h3>   
+                    <h5 className="song-artists">{this.props.songObject.artists}</h5>
+                </div>
+                <small className="song-length">{formattedDuration}</small>
             </div>
         );
     }

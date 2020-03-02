@@ -67,7 +67,7 @@ export default class LibraryFragment extends React.Component<IProps, IState> {
                     </li>);
 
                 return (
-                    <ul>{albumComponents}</ul>
+                    <ul style={{listStyleType: "none"}}>{albumComponents}</ul>
                 );
             }
 
