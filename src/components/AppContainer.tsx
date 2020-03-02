@@ -3,10 +3,11 @@ import { Subscription } from "rxjs";
 
 import LoginSplash from "./LoginSplash/LoginSplash";
 import PlayerShell from "./PlayerShell/PlayerShell";
-import ProgressUI from "./ProgressUI";
 
 import IAuthenticationService from "../services/IAuthenticationService";
 import GoogleAPIAuthenticationService from "../services/GoogleAPIAuthenticationService";
+
+import "./AppContainer.css";
 
 export interface IProps {
     _authService?: IAuthenticationService
@@ -64,14 +65,20 @@ export default class AppContainer extends React.Component<IProps, IState> {
     }
 
     render() {
+        let content: JSX.Element;
+
         if (!this.state.initialized) {
-            return (<p className="loading-message">Loading data...</p>);
+            content = (<p className="loading-message">Loading data...</p>);
+        } else if (this.state.userAuthenticated) {
+            content = (<PlayerShell authService={this.authService} />);
+        } else {
+            content = (<LoginSplash authService={this.authService} />);
         }
 
-        if (this.state.userAuthenticated) {
-            return (<PlayerShell authService={this.authService} />);
-        } 
-
-        return (<LoginSplash authService={this.authService} />);
+        return (
+            <div className="app-container">
+                {content}
+            </div>
+        );
     }
 }

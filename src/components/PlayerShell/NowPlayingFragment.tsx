@@ -7,6 +7,8 @@ import IMusicPlaybackController from "../../services/IMusicPlaybackController";
 import { PlayerState } from "../../models/PlayerState";
 import { PlaybackStatus } from "../../models/PlaybackStatus";
 
+import "./NowPlayingFragment.css";
+
 export interface IProps {
     playbackController: IMusicPlaybackController
 }
@@ -53,10 +55,12 @@ export default class NowPlayingFragment extends React.Component<IProps, IState> 
         let songElement = (<div></div>);
         if (currentPlayerState.currentAlbum && currentPlayerState.currentSong) {
             songElement = (
-                <div>
+                <div className="song-info">
                     <img className="current-cover" src={currentPlayerState.currentAlbum.coverUrl}></img>
-                    <p className="current-title">{currentPlayerState.currentSong.title}</p>
-                    <p className="current-artists">{currentPlayerState.currentSong.artists}</p>
+                    <div className="song-text-container">
+                        <p className="current-title">{currentPlayerState.currentSong.title}</p>
+                        <p className="current-artists">{currentPlayerState.currentSong.artists}</p>
+                    </div>
                 </div>
             );
         }
@@ -87,18 +91,23 @@ export default class NowPlayingFragment extends React.Component<IProps, IState> 
         let lengthString = moment.utc(lengthInSeconds * 1000).format("m:ss");
 
         return (
-            <div>
-                {songElement}
-                <div>
-                    <button className="previous-button disabled">Previous</button>
-                    <button className={playButtonClass + " playback-button"}>Play</button>
-                    <button className="next-button disabled">Next</button>
+            <div className="nowplaying-container">
+                <div className="info-container">
+                    {songElement}
                 </div>
-                <div>
-                    <progress className={progressClass + " playback-progress"} value={playbackPercentage} max={100}></progress>
-                    <p className="playback-position">{positionString}</p>
-                    <p className="playback-length">{lengthString}</p>
+                <div className="controls-container">
+                    <div className="buttons-container">
+                        <span className="previous-button disabled">Previous</span>
+                        <span className={playButtonClass + " playback-button"}>Play</span>
+                        <span className="next-button disabled">Next</span>
+                    </div>
+                    <div className="progress-container">
+                        <p className="playback-position">{positionString}</p>
+                        <progress className={progressClass + " playback-progress"} value={playbackPercentage} max={100}></progress>
+                        <p className="playback-length">{lengthString}</p>
+                    </div>
                 </div>
+                <div className="padding-element"></div>
             </div>
         );
     }

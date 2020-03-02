@@ -1,5 +1,4 @@
 import * as React from "react";
-import Styled from "styled-components";
 
 import IMusicPlaybackController from "../../services/IMusicPlaybackController";
 import DefaultPlaybackController from "../../services/DefaultPlaybackController";
@@ -9,20 +8,13 @@ import ProfileFragment from "./ProfileFragment";
 import LibraryFragment from "./LibraryFragment";
 import NowPlayingFragment from "./NowPlayingFragment";
 
+import "./PlayerShell.css";
+
 export interface IProps {
     authService: IAuthenticationService;
 }
 
 export default class PlayerShell extends React.Component<IProps, {}> {
-    private StackWrapper = Styled.div`
-        display: flex;
-        flex-direction: column;
-    `;
-
-    private LibraryWrapper = Styled.div`
-        flex-grow: 1;
-    `;
-
     private authService: IAuthenticationService;
     private playbackController: IMusicPlaybackController;
 
@@ -35,13 +27,17 @@ export default class PlayerShell extends React.Component<IProps, {}> {
 
     render() {
         return (
-            <this.StackWrapper>
-                <ProfileFragment authService={this.authService} />
-                <this.LibraryWrapper>
+            <div className="main-stack">
+                <div className="profile-container">
+                    <ProfileFragment authService={this.authService} />
+                </div>
+                <div className="library-container">
                     <LibraryFragment authService={this.authService} playbackController={this.playbackController} />
-                </this.LibraryWrapper>
-                <NowPlayingFragment playbackController={this.playbackController} />
-            </this.StackWrapper>
+                </div>
+                <div>
+                    <NowPlayingFragment playbackController={this.playbackController} />
+                </div>
+            </div>
         );
     }
 }

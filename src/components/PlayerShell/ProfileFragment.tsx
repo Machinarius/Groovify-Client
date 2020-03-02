@@ -1,8 +1,10 @@
 import * as React from "react";
 
 import IAuthenticationService from "../../services/IAuthenticationService";
+
 import UserProfile from "../../models/UserProfile";
-import ProgressUI from "../ProgressUI";
+
+import "./ProfileFragment.css";
 
 export interface IProps {
     authService: IAuthenticationService
@@ -51,10 +53,13 @@ export default class ProfileFragment extends React.Component<IProps, IState> {
         } 
         
         return (
-            <div>
-                <p className={"profile-name"}>Welcome, {this.state.userProfile.name}</p>
-                <img className={"profile-picture"} src={this.state.userProfile.pictureUrl} />
-                <button className={"logout-button"} onClick={() => this.logOut()}>Log Out</button>
+            <div className="profile-container">
+                <h2 className="app-logo">Groovify!</h2>
+                <div className="profile-text">
+                    <p className="profile-name">Welcome, {this.state.userProfile.name}</p>
+                    <small className="logout-button" onClick={this.logOut}>Log Out</small>
+                </div>
+                <img className="profile-picture" src={this.state.userProfile.pictureUrl} />
             </div>
         );
     }

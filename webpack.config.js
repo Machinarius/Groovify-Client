@@ -31,6 +31,9 @@ module.exports = {
             test: /\.js$/,
             loader: "source-map-loader"
         }, {
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader']
+        }, {
             test: /\.(png|jpe?g|gif)$/i,
             use: [{
                 loader: 'file-loader'
@@ -49,6 +52,9 @@ module.exports = {
         }, {
             from: "./node_modules/react-dom/umd/react-dom.development.js",
             to: "./vendor/react-dom.development.js"
+        }, {
+            from: "./src/Index.css",
+            to: "./Index.css"
         }]),
         new HtmlWebpackPlugin({
             title: "Groovify"
@@ -57,7 +63,11 @@ module.exports = {
             tags: [ 
                 "https://apis.google.com/js/api.js",
                 "./vendor/react.development.js", 
-                "./vendor/react-dom.development.js" 
+                "./vendor/react-dom.development.js",
+                "./Index.css"
+            ],
+            links: [
+                "https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap"
             ],
             append: false
         })

@@ -1,0 +1,71 @@
+.nowplaying-container {
+    background: #282828;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-container {
+    align-self: start;
+    width: 25vw;
+}
+
+.padding-element {
+    height: 90px;
+    align-self: end;
+    width: 25vw;
+}
+
+.controls-container {
+    flex-grow: 1;
+    align-self: center;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+}
+
+.song-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+
+.current-cover {
+    width: 60px;
+    height: 60px;
+    margin-left: 1em;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    margin-right: 0.5em;
+}
+
+.song-text-container > * { 
+    margin: 0;
+}
+
+.progress-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.playback-progress {
+    flex-grow: 1;
+    height: 1em;
+}
+
+.playback-position {
+    align-self: flex-start;
+    margin: 0;
+    margin-right: 0.25em;
+}
+
+.playback-length {
+    margin: 0;
+    margin-left: 0.25em;
+}
