@@ -39,7 +39,10 @@ export default class DefaultPlaybackController implements IMusicPlaybackControll
                 this.currentState.currentAlbum = album;
                 this.currentState.currentSong = song;
                 this.currentState.status = PlaybackStatus.Playing;
+                this.currentState.playbackPositionInSeconds = 0;
                 this.changes.next(this.currentState);
+
+                this.startFakePlaybackTicks();
             });
     }
     
@@ -49,5 +52,18 @@ export default class DefaultPlaybackController implements IMusicPlaybackControll
 
     getCurrentPlayerState(): PlayerState {
         return this.currentState;
+    }
+
+    startFakePlaybackTicks(): void {
+        setTimeout(() => {
+            if (this.currentState.playbackPositionInSeconds >= this.currentState.currentSong.lengthInSeconds) {
+                return;
+            }
+
+            this.currentState.playbackPositionInSeconds += 1;
+            this.changes.next(this.currentState);
+
+            this.startFakePlaybackTicks();
+        }, 1000);
     }
 }
