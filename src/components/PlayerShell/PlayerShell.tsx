@@ -40,7 +40,7 @@ export default class PlayerShell extends React.Component<IProps, {}> {
                 <this.LibraryWrapper>
                     <LibraryFragment authService={this.authService} playbackController={this.playbackController} />
                 </this.LibraryWrapper>
-                <NowPlayingFragment authService={this.authService} playbackController={this.playbackController} />
+                <NowPlayingFragment playbackController={this.playbackController} />
             </this.StackWrapper>
         );
     }
