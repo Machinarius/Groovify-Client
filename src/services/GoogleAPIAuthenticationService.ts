@@ -5,6 +5,7 @@ import UserProfile from "../models/UserProfile";
 
 export default class GoogleAPIAuthenticationService implements IAuthenticationService {
     private googleAuth: gapi.auth2.GoogleAuth;
+    private currentUser: gapi.auth2.GoogleUser;
     private statusSubject: Subject<boolean>;
 
     constructor() {
@@ -27,6 +28,11 @@ export default class GoogleAPIAuthenticationService implements IAuthenticationSe
         this.statusSubject = new Subject<boolean>();
         this.googleAuth = gapi.auth2.getAuthInstance();
         this.googleAuth.isSignedIn.listen(this.onSignedInChanged);
+        
+        if (this.googleAuth.isSignedIn.get()) {
+            this.currentUser = this.googleAuth.currentUser.get();
+            this.printAccessToken();
+        }
     }    
     
     authStateChanges(): Observable<boolean> {
@@ -39,14 +45,17 @@ export default class GoogleAPIAuthenticationService implements IAuthenticationSe
         return this.googleAuth.isSignedIn.get();
     }
 
-    beginLogin(): void {
+    async beginLogin(): Promise<void> {
         this.ensureInitialized();
-        this.googleAuth.signIn();
+        this.currentUser = await this.googleAuth.signIn();
+        this.printAccessToken();
     }
 
     logOut(): void {
         this.ensureInitialized();
         this.googleAuth.signOut();
+
+        this.currentUser = null;
     }
 
     async getProfileAsync(): Promise<UserProfile> {
@@ -85,6 +94,15 @@ export default class GoogleAPIAuthenticationService implements IAuthenticationSe
         return userProfile;
     }
 
+    public getOAuthToken(): string {
+        this.ensureInitialized();
+        if (!this.googleAuth.isSignedIn.get() || !this.currentUser) {
+            throw new Error("The user must be authenticated before requesting an access token");
+        }
+
+        return this.currentUser.getAuthResponse().id_token;
+    }
+
     private ensureInitialized() {
         if (!this.googleAuth) {
             throw new Error("initAsync must successfully finish before this method is called");
@@ -93,6 +111,10 @@ export default class GoogleAPIAuthenticationService implements IAuthenticationSe
 
     private onSignedInChanged(signedIn: boolean) {
         this.statusSubject.next(signedIn);
+    }
+
+    private printAccessToken() {
+        console.log("Access token: " + this.getOAuthToken());
     }
 }
 
